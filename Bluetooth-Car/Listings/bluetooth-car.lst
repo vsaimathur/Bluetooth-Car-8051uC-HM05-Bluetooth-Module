@@ -1,0 +1,75 @@
+C51 COMPILER V9.60.0.0   BLUETOOTH_CAR                                                     05/08/2020 19:10:57 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE BLUETOOTH_CAR
+OBJECT MODULE PLACED IN .\Objects\bluetooth-car.obj
+COMPILER INVOKED BY: D:\2nd Year MPMCI Mini Project\Keil\C51\BIN\C51.EXE bluetooth-car.c OPTIMIZE(8,SPEED) BROWSE DEBUG 
+                    -OBJECTEXTEND PRINT(.\Listings\bluetooth-car.lst) TABS(2) OBJECT(.\Objects\bluetooth-car.obj)
+
+line level    source
+
+   1          //works with HC-05 Bluetooth Module by interfacing with 8051 uC.
+   2          #include<reg51.h>
+   3          sbit m1p = P2^0;
+   4          sbit m1n = P2^1;
+   5          sbit m2p = P2^2;
+   6          sbit m2n = P2^3;
+   7          //motor input connections//
+   8          void main()
+   9          {
+  10   1        unsigned char x;
+  11   1        SCON = 0x50;
+  12   1        TMOD = 0x20;
+  13   1        TH1 = -3;
+  14   1        TR1 = 1;  //initialize serial communication
+  15   1        while(1)
+  16   1        {
+  17   2          while(RI == 0);
+  18   2          x = SBUF;
+  19   2          RI = 0;
+  20   2          SBUF = x;
+  21   2          while(TI == 0);
+  22   2          TI = 0;
+  23   2          if(x == 'f')
+  24   2          {
+  25   3            m1p = 1; m1n = 0;
+  26   3            m2p = 1; m2n = 0; //robot moves forward
+  27   3          }
+  28   2          if(x == 'b')
+  29   2          {
+  30   3            m1p = 0; m1n = 1;
+  31   3            m2p = 0; m2n = 1; //robot moves backwards
+  32   3          }
+  33   2          if(x == 'l')
+  34   2          {
+  35   3            m1p = 1; m1n = 0;
+  36   3            m2p = 0; m2n = 1; // turns left
+  37   3          }
+  38   2          if(x == 'r')
+  39   2          {
+  40   3            m1p = 0; m1n = 1;
+  41   3            m2p = 1; m2n = 0;  //turns right
+  42   3          }
+  43   2          if(x == 's')
+  44   2          {
+  45   3            m1p = 0; m1n = 0;
+  46   3            m2p = 0; m2n = 0;  //stop
+  47   3          }
+  48   2        }
+  49   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     82    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.60.0.0   BLUETOOTH_CAR                                                     05/08/2020 19:10:57 PAGE 2   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
